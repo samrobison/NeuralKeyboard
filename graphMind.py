@@ -9,8 +9,8 @@ mindWave = NeuroPy("/dev/tty.MindWaveMobile-DevA", 57600)
 fig, ax = plt.subplots()
 mindWave.start()
 
-x = np.arange(0, 100, 1)
-z = np.arange(0, 100, 1)
+x = np.arange(0, 100, .3)
+z = np.arange(0, 100, .3)
 line, = ax.plot(x, x, label="Attention",c='r' )
 line2, = ax.plot(x, x,label="Meditation",c='b' )
 def animate(i):
@@ -42,4 +42,7 @@ def init():
 
 ani = animation.FuncAnimation(fig, animate, np.arange(1, 200), init_func=init)
 plt.legend(loc="upper left")
+frame1 = plt.gca()
+frame1.axes.get_xaxis().set_visible(False)
+
 plt.show()
