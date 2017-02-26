@@ -1,20 +1,29 @@
-from sklearn import tree
+import csv
+import pandas as pd
+from clustering import kmeans
+from clustering import fitNewPoint
 
 class Classifier:
     def __init__(self):
-        print('foo')
+        self.data = pd.read_csv('./train.csv')
+        self.epslion = .1
 
     def addTrainingData(data):
-        #TODO: add training function
+        with open('./train.csv', 'a') as f:
+            writer = csv.writer(f)
+            writer.writerow(data)
 
     def trainClassifier():
-        #TODO: make function to train data
+        self.data = pd.read_csv('./train.csv')
+        #normalize
+        norm = (data - data.mean())/ data.std()
+        clusteredData , self.clusters = kmeans(3, norm.values.tolist())
 
     def fitData(data):
-        #TODO: fit data to classifier
+        return fitNewPoint(self.centroids, data, self.epsilon)
 
     def saveTrainingData():
-        #TODO: save training data as csv
-
-    def importTrainingData():
-        #TODO: import training data from csv
+        with open('./train.csv', 'ab') as f:
+            writer = csv.writer(f)
+            for i in self.data:
+                writer.writerow(i)
