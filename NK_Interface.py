@@ -19,7 +19,6 @@ class NK_Interface(Frame):
 
         self.parent = parent
 
-        pad = 0
         global screen_width
         screen_width = parent.winfo_screenwidth()
         global screen_height
@@ -28,8 +27,6 @@ class NK_Interface(Frame):
         parent.geometry("{0}x{1}+0+0".format(screen_width, screen_height))
 
         parent.bind("<Escape>", self.toggle_full_manual)
-
-    def initUI(self):
     
         #Main Window
         self.parent.title("Neural Keyboard")
@@ -42,20 +39,16 @@ class NK_Interface(Frame):
         global calib_canvas
         calib_canvas = Canvas(self, background='white', width=screen_width, height=screen_height)
 
-        self.init_calib()
+        #self.init_calib()
         
 
-    def toggle_full(self):
-        geom = self.parent.winfo_geometry()
-        self.parent.geometry(self._geom)
-        self._geom = geom
+##    def toggle_full(self):
+##        geom = self.parent.winfo_geometry()
+##        self.parent.geometry(self._geom)
+##        self._geom = geom
+##
 
-    def toggle_full_manual(self, event):
-        geom = self.parent.winfo_geometry()
-        self.parent.geometry(self._geom)
-        self._geom = geom
-
-    def init_calib(self):
+    #def init_calib(self):
         calib_canvas.pack()
         calib_frame.pack()
 
@@ -134,6 +127,11 @@ class NK_Interface(Frame):
             sleep(delay)
 
         self.parent.quit()
+        
+    def toggle_full_manual(self, event):
+        geom = self.parent.winfo_geometry()
+        self.parent.geometry(self._geom)
+        self._geom = geom
 
     def render_arrow(self, val):
         
@@ -179,8 +177,6 @@ def main():
     root = Tk()
 
     nk_inter = NK_Interface(root)
-
-    nk_inter.initUI()
     
     root.mainloop()
     
