@@ -24,39 +24,16 @@ class NK_Interface(Frame):
         screen_width = parent.winfo_screenwidth()
         global screen_height
         screen_height = parent.winfo_screenheight()
-        self._geom = "{0}x{1}+0+0".format(screen_width, screen_height)
-        parent.geometry("{0}x{1}+{2}+{3}".format(screen_width//scale, screen_height//scale, screen_width//2 - screen_width//(2*scale), screen_height//2 - screen_height//(2*scale)))
+        self._geom = "{0}x{1}+{2}+{3}".format(screen_width//scale, screen_height//scale, screen_width//2 - screen_width//(2*scale), screen_height//2 - screen_height//(2*scale))
+        parent.geometry("{0}x{1}+0+0".format(screen_width, screen_height))
 
         parent.bind("<Escape>", self.toggle_full_manual)
 
     def initUI(self):
-
-        #initialize global variables
-
-        global setup_frame
-        setup_frame = Frame(self, background='white')
-        setup_frame.pack()
     
         #Main Window
         self.parent.title("Neural Keyboard")
         self.pack(fill=BOTH, expand=1)
-
-        #Radio Buttons
-        global radioVar
-        radioVar = IntVar()
-        radioVar = -1
-        rbTextList = [("Arrows (B/W)    "),
-                      ("Arrows (Color)  "),
-                      ("Audio Cues      ")]
-        radioButtonList = []
-        for i in range(0, 3):
-            radioButtonList.append(Radiobutton(setup_frame, text=rbTextList[i], variable=radioVar, value=i, background='white'))
-            radioButtonList[i].grid(row=i)
-
-        #Start Button
-        startButton = Button(setup_frame, text="Begin Calibration")
-        startButton.bind('<Button-1>', self.init_calib)
-        startButton.grid(row=3)
 
         #Initialize Calibration Frame and Canvas (do not pack)
         global calib_frame
@@ -64,9 +41,11 @@ class NK_Interface(Frame):
 
         global calib_canvas
         calib_canvas = Canvas(self, background='white', width=screen_width, height=screen_height)
+
+        self.init_calib()
         
 
-    def toggle_full(self, event):
+    def toggle_full(self):
         geom = self.parent.winfo_geometry()
         self.parent.geometry(self._geom)
         self._geom = geom
@@ -76,21 +55,34 @@ class NK_Interface(Frame):
         self.parent.geometry(self._geom)
         self._geom = geom
 
-    def init_calib(self, event):
-        setup_frame.pack_forget()
-        self.toggle_full(event)
+    def init_calib(self):
         calib_canvas.pack()
         calib_frame.pack()
 
+        #upArrow = PhotoImage("resources/images/Arrow_U.ppm")
+        #rightArrow = PhotoImage("resources/images/Arrow_R.ppm")
+        #downArrow = PhotoImage("resources/images/Arrow_D.ppm")
+        #leftArrow = PhotoImage("resources/images/Arrow_L.ppm")
+        
         #list of calibration directions - 0 is up, 1 is right, 2 is down,  3 is left
         dir_list = [0,1,2,3,2,1,3,0,2,1,0,3,0,3,2,1,3,2,0,1]
 
         for val in dir_list:
 
+##            if(val == 0):
+##                calib_canvas = Label(self, image=upArrow)
+##                calib_canvas.image = upArrow
+##            elif(val == 1):
+##                calib_canvas = Label(self, image=rightArrow)
+##                calib_canvas.image = rightArrow
+##            elif(val == 2):
+##                calib_canvas = Label(self, image=downArrow)
+##                calib_canvas.image = downArrow
+##            else:
+##                calib_canvas = Label(self, image=leftArrow)
+##                calib_canvas.image = leftArrow
+
             data = []
-            attention = []
-            meditation = []
-            rawValue = []
             delta = []
             theta = []
             lowAlpha = []
@@ -100,28 +92,27 @@ class NK_Interface(Frame):
             lowGamma = []
             midGamma = []
             
+            w = screen_width
+            h = screen_height
+            
+            #calib_canvas.create_image(w//2 - calib_canvas.image.width()//2, h//2 - calib_canvas.image.height()//2, image=calib_canvas.image)
             self.render_arrow(val)
+            calib_canvas.pack()
 
             self.parent.update_idletasks()
             
-            for i in range(0, 1000):
+            for i in range(0, delay * 1000):
                 #Append MindWave outputs:
-                attention.append(i)
-                meditation.append(i+1)
-                rawValue.append(i+2)
-                delta.append(i+3)
-                theta.append(i+4)
-                lowAlpha.append(i+5)
-                highAlpha.append(i+6)
-                lowBeta.append(i+7)
-                highBeta.append(i+8)
-                lowGamma.append(i+9)
-                midGamma.append(i+10)
+                delta.append(i)
+                theta.append(i+1)
+                lowAlpha.append(i+2)
+                highAlpha.append(i+3)
+                lowBeta.append(i+4)
+                highBeta.append(i+5)
+                lowGamma.append(i+6)
+                midGamma.append(i+7)
                 sleep(0.001)
                 
-            data.append(attention)
-            data.append(meditation)
-            data.append(rawValue)
             data.append(delta)
             data.append(theta)
             data.append(lowAlpha)
@@ -138,14 +129,17 @@ class NK_Interface(Frame):
             dataList.append(dataPack)
 
             calib_canvas.delete('all')
+            #calib_canvas.pack_forget()
             self.parent.update_idletasks()
-            sleep(1)
+            sleep(delay)
 
         self.parent.quit()
 
     def render_arrow(self, val):
+        
         w = screen_width
         h = screen_height
+
         upArrow = [w//2+h//12, h//2+w//8, w//2-h//12, h//2+w//8, w//2-h//12, h//2, w//2-h//6, h//2, w//2, h//2-w//8, w//2+h//6, h//2, w//2+h//12, h//2]
         rightArrow = [3*w//8, 7*h//12, 3*w//8, 5*h//12, w//2, 5*h//12, w//2, 4*h//12, 5*w//8, h//2, w//2, 8*h//12, w//2, 7*h//12]
         downArrow = [w//2-h//12, h//2-w//8, w//2+h//12, h//2-w//8, w//2+h//12, h//2, w//2+h//6, h//2, w//2, h//2+w//8, w//2-h//6, h//2, w//2-h//12, h//2]
@@ -153,17 +147,20 @@ class NK_Interface(Frame):
         
         if (val == 0):
             #render 'up' arrow
-            calib_canvas.create_polygon(upArrow, outline='black', fill='black')
+            calib_canvas.create_polygon(upArrow, fill='black', outline='black')
+            #calib_canvas.create_image(w//2 - upArrow.width()//2, h//2 - upArrow.height()//2, image=upArrow)
         elif (val == 1):
             #render 'right' arrow
-            calib_canvas.create_polygon(rightArrow, outline='black', fill='black')
+            calib_canvas.create_polygon(rightArrow, fill='black', outline='black')
+            #calib_canvas.create_image(w//2 - rightArrow.width()//2, h//2 - rightArrow.height()//2, image=rightArrow)
         elif (val == 2):
             #render 'down' arrow
-            calib_canvas.create_polygon(downArrow, outline='black', fill='black')
+            calib_canvas.create_polygon(downArrow, fill='black', outline='black')
+            #calib_canvas.create_image(w//2 - downArrow.width()//2, h//2 - downArrow.height()//2, image=downArrow)
         else:
             #render 'left' arrow
-            calib_canvas.create_polygon(leftArrow, outline='black', fill='black')
-        calib_canvas.pack()
+            calib_canvas.create_polygon(leftArrow, fill='black', outline='black')
+            #calib_canvas.create_image(w//2 - leftArrow.width()//2, h//2 - leftArrow.height()//2, image=leftArrow)
     
     def return_data(self):
         return dataList
@@ -172,6 +169,12 @@ class NK_Interface(Frame):
 def main():
 
     #set up classifier
+    global color
+    color = int(sys.argv[1])
+    global audio
+    audio = int(sys.argv[2])
+    global delay
+    delay = int(sys.argv[3])
 
     root = Tk()
 
