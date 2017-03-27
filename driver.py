@@ -21,7 +21,6 @@ def startGUI():
         calib_canvas.delete('all')
         root.update_idletasks()
 
-
     root.mainloop()
 
 def render_arrow(val, screen_width, screen_height, calib_canvas):
