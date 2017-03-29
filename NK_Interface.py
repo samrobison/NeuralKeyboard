@@ -82,8 +82,8 @@ class NK_Interface:
 
         #list of calibration directions - 0 is up, 1 is right, 2 is down,  3 is left
         dir_list = [0,1,2,3,2,1,3,0,2,1,0,3,0,3,2,1,3,2,0,1]
-
-
+        #dir_list = [0,1,2,]
+        skip = True
         for val in dir_list:
 
             data = []
@@ -96,7 +96,8 @@ class NK_Interface:
             lowGamma = []
             midGamma = []
 
-            self.render_arrow(val)
+            self.render_arrow(val,skip)
+            skip = False
 
             for i in range(0, self.delay * 1000):
                 #Append MindWave outputs:
@@ -129,16 +130,10 @@ class NK_Interface:
             self.parent.update_idletasks()
             sleep(self.delay)
         self.calib_canvas.delete("all")
-        self.calib_canvas.create_text(self.screen_width//2, self.screen_height//2, text="Press Escape to Finish Calibration", font=self.textFont)
-        self.parent.bind("<Escape>", self.exit_loop)
+        #self.calib_canvas.create_text(self.screen_width//2, self.screen_height//2, text="Press Escape to Finish Calibration", font=self.textFont)
+        self.parent.destroy()
 
-        self.calib_canvas.pack()
-        self.parent.update_idletasks()
-
-        self.pterminate()
-
-
-    def render_arrow(self, val):
+    def render_arrow(self, val,skip):
 
         if (val == 0):
             print "up"
@@ -146,6 +141,8 @@ class NK_Interface:
             self.calib_canvas.create_image(self.screen_width/2, self.screen_height/2, image=self.up)
             self.calib_canvas.pack()
             self.parent.update_idletasks()
+            if skip:
+                return
             #calib_canvas.create_image(w//2 - upArrow.width()//2, h//2 - upArrow.height()//2, image=upArrow)
             if(self.audio == 1):
                 f = wave.open("./resources/audio/Audio_U.wav", "rb")
@@ -225,7 +222,7 @@ class NK_Interface:
         self.parent.quit()
 
     def return_data(self):
-        return self.self.datalist
+        return self.datalist
 
 # def main():
 #
