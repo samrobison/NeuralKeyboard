@@ -34,7 +34,7 @@ def main():
     SCR_HEIGHT = root.winfo_screenheight()
 
     #initialize system values
-    FRAMERATE = 60
+    FRAMERATE = 30
     WIN_SCALE = 3
     WIN_WIDTH = SCR_WIDTH // WIN_SCALE
     WIN_HEIGHT = SCR_WIDTH // WIN_SCALE
@@ -171,6 +171,7 @@ def main():
         usr_entity.display(screen)
 
         pygame.display.flip()
+        clock.tick(FRAMERATE)
 
 if __name__ == "__main__":
     main()
