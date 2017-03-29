@@ -135,7 +135,7 @@ class NK_Interface:
         self.calib_canvas.pack()
         self.parent.update_idletasks()
 
-        self.pterminate()
+        self.parent.quit()
 
 
     def render_arrow(self, val):
