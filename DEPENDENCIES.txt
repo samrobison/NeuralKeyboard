@@ -1,0 +1,6 @@
+NeuroPy
+tkinter
+pyaudio
+wave
+tkFont
+pillow
