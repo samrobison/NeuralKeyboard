@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from NeuroPy import NeuroPy
-#from classifier import Classifier
+from classifier import Classifier
 import Tkinter
 #import gui class here
 import time, sys
@@ -47,7 +47,7 @@ def render_arrow(val, screen_width, screen_height, calib_canvas):
 
 def main(argv):
     #start mindWave
-    #c = Classifier()
+    c = Classifier()
     #start gui with instance of Classifier
     startGUI()
     #close gui after training data is added

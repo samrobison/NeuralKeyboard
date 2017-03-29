@@ -1,5 +1,5 @@
 import random
-from IPython import embed
+#from IPython import embed
 
 
 def kmeans(n, data):
