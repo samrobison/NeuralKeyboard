@@ -8,14 +8,21 @@ class Entity:
     def __init__(self, (x, y), size):
         self.x = x
         self.y = y
+        self.x_prev = x
+        self.y_prev = y
         self.size = size
         self.colour = (0,0,0)
+        self.bg = (255,255,255)
         self.thickness = 1
         self.v_x = 0
         self.v_y = 0
     def display(self, screen):
         pygame.draw.circle(screen, self.colour, (int(self.x - (self.size / 2)), int(self.y - (self.size / 2))), self.size, self.thickness)
+    def clear(self, screen):
+        pygame.draw.circle(screen, self.bg, (int(self.x_prev - (self.size / 2)), int(self.y_prev - (self.size / 2))), self.size, self.thickness)
     def move(self):
+        self.x_prev = self.x
+        self.y_prev = self.y
         self.x += self.v_x
         self.y += self.v_y
 
@@ -123,13 +130,13 @@ def main():
         #set entity velocity
         if(move_x == 0):
             #reset x to anchor
-            if(abs(diff_x) > 60 / FRAMERATE):
+            if(abs(diff_x) > 120 / FRAMERATE):
                 if(diff_x < 0):
-                    return_v_x = 60 / FRAMERATE
+                    return_v_x = 120 / FRAMERATE
                 else:
-                    return_v_x = -60 / FRAMERATE
+                    return_v_x = -120 / FRAMERATE
             else:
-                return_v_x = -1 * (diff_x % (60 / FRAMERATE))
+                return_v_x = -1 * (diff_x % (120 / FRAMERATE))
             usr_entity.v_x = return_v_x
         else:
             usr_entity.v_x = (move_x * 60 / FRAMERATE)
@@ -140,13 +147,13 @@ def main():
                 usr_entity.v_x = 0
         if(move_y == 0):
             #reset x to anchor
-            if(abs(diff_y) > 60 / FRAMERATE):
+            if(abs(diff_y) > 120 / FRAMERATE):
                 if(diff_y < 0):
-                    return_v_y = 60 / FRAMERATE
+                    return_v_y = 120 / FRAMERATE
                 else:
-                    return_v_y = -60 / FRAMERATE
+                    return_v_y = -120 / FRAMERATE
             else:
-                return_v_y = -1 * (diff_y % (60 / FRAMERATE))
+                return_v_y = -1 * (diff_y % (120 / FRAMERATE))
             usr_entity.v_y = return_v_y
         else:
             usr_entity.v_y = (move_y * 60 / FRAMERATE)
@@ -160,7 +167,7 @@ def main():
         usr_entity.move()
 
         #display entity
-        screen.fill([255,255,255])
+        usr_entity.clear(screen)
         usr_entity.display(screen)
 
         pygame.display.flip()
