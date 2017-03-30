@@ -7,21 +7,20 @@ import wave
 import Tkinter as tk
 
 
-class DataPack:
-    val = -1
-    data = []
-
 class NK_Interface:
 
     def __init__(self, color, audio, delay):
-        self.datalist = []
+        self.dataList = []
         self.color = color
         self.audio = audio
         self.delay = delay
+        self.currentData = False
         if audio == 1:
             self.p = pyaudio.PyAudio()
 
-
+    def callBackFunc(self, val):
+        if self.currentData != False:
+            self.currentData.append(val)
 
     def init_calib(self):
         self.parent = tk.Tk()
@@ -45,7 +44,12 @@ class NK_Interface:
             self.up = ImageTk.PhotoImage(Image.open("resources/images/uparrowyellow.png"))
             self.down = ImageTk.PhotoImage(Image.open("resources/images/downarrowgreen.png"))
 
+        #start MindWave
+        mindWave = NeuroPy("/dev/tty.MindWaveMobile-DevA", 57600)
+        mindWave.start()
 
+        #start call back
+        mindWave.setCallBack("rawValue", self.callBackFunc)
 
         #initiate calibration countdown:
         self.calib_canvas.delete("all")
@@ -86,48 +90,23 @@ class NK_Interface:
         skip = True
         for val in dir_list:
 
-            data = []
-            delta = []
-            theta = []
-            lowAlpha = []
-            highAlpha = []
-            lowBeta = []
-            highBeta = []
-            lowGamma = []
-            midGamma = []
-
-            self.render_arrow(val,skip)
+            label = self.render_arrow(val,skip)
             skip = False
 
-            for i in range(0, self.delay * 1000):
-                #Append MindWave outputs:
-                delta.append(i)
-                theta.append(i+1)
-                lowAlpha.append(i+2)
-                highAlpha.append(i+3)
-                lowBeta.append(i+4)
-                highBeta.append(i+5)
-                lowGamma.append(i+6)
-                midGamma.append(i+7)
-                sleep(0.001)
+            #let the callback collect data
+            self.currentData = []
 
-            data.append(delta)
-            data.append(theta)
-            data.append(lowAlpha)
-            data.append(highAlpha)
-            data.append(lowBeta)
-            data.append(highBeta)
-            data.append(lowGamma)
-            data.append(midGamma)
-
-            dataPack = DataPack()
-            dataPack.val = val
-            dataPack.data = data
-
-            self.datalist.append(dataPack)
+            sleep(3)
 
             self.calib_canvas.delete('all')
             self.parent.update_idletasks()
+
+            #stop collection
+            trial = self.currentData[:]
+            self.currentData = False
+            #add data with label to data list
+            self.dataList.append([trial, label])
+
             sleep(self.delay)
         self.calib_canvas.delete("all")
         #self.calib_canvas.create_text(self.screen_width//2, self.screen_height//2, text="Press Escape to Finish Calibration", font=self.textFont)
@@ -136,7 +115,7 @@ class NK_Interface:
     def render_arrow(self, val,skip):
 
         if (val == 0):
-            print "up"
+            label = "up"
             #render 'up' arrow
             self.calib_canvas.create_image(self.screen_width/2, self.screen_height/2, image=self.up)
             self.calib_canvas.pack()
@@ -158,7 +137,7 @@ class NK_Interface:
                 stream.stop_stream()
                 stream.close()
         elif (val == 1):
-            print "right"
+            label =  "right"
             #render 'right' arrow
             self.calib_canvas.create_image(self.screen_width/2, self.screen_height/2, image=self.right)
             self.calib_canvas.pack()
@@ -178,7 +157,7 @@ class NK_Interface:
                 stream.stop_stream()
                 stream.close()
         elif (val == 2):
-            print "down"
+            label = "down"
             #render 'down' arrow
             self.calib_canvas.create_image(self.screen_width/2, self.screen_height/2, image=self.down)
             self.calib_canvas.pack()
@@ -198,7 +177,7 @@ class NK_Interface:
                 stream.stop_stream()
                 stream.close()
         else:
-            print "left"
+            label =  "left"
             #render 'left' arrow
             self.calib_canvas.create_image(self.screen_width/2, self.screen_height/2, image=self.left)
             self.calib_canvas.pack()
@@ -217,12 +196,13 @@ class NK_Interface:
                     data = f.readframes(1024)
                 stream.stop_stream()
                 stream.close()
+            return label
 
     def exit_loop(self, event):
         self.parent.quit()
 
     def return_data(self):
-        return self.datalist
+        return self.dataList
 
 # def main():
 #
