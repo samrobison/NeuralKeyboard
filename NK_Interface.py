@@ -92,7 +92,11 @@ class NK_Interface:
         for val in self.dir_list:
 
             label = self.render_arrow(val,skip)
-            skip = False
+            if skip:
+                skip = False
+                self.calib_canvas.delete('all')
+                self.parent.update_idletasks()
+                continue
 
             #let the callback collect data
             self.currentData = []
@@ -198,7 +202,7 @@ class NK_Interface:
                     data = f.readframes(1024)
                 stream.stop_stream()
                 stream.close()
-            return label
+        return label
 
     def exit_loop(self, event):
         self.parent.quit()

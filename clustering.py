@@ -10,6 +10,7 @@ def kmeans(n, data):
     centroids = []
     randos = []
     #get starting points
+    print "choosing centroids"
     for i in range(n):
         rand = int(random.random() * len(data))
         #make sure random centroid isn't taken
@@ -20,6 +21,7 @@ def kmeans(n, data):
     for i in randos:
         centroids.append(data[i])
     #500 times
+    print "starting clustering"
     for i in range(500):
         #calculate each point's closest centroid
         for point in data:
@@ -52,11 +54,15 @@ def recalcCentroids(data, centroids):
     for point in data:
         counts[point[-1]] += 1
         for i in range(len(point)):
+            if point[i].__class__.__name__ == 'str':
+                continue
             tmpCents[point[-1]][i] += point[i]
 #    print counts
     for point in tmpCents:
         c = counts[tmpCents.index(point)]
         for k in range(len(point)):
+            if point[k].__class__.__name__ == 'str':
+                continue
             point[k] /= c
     return tmpCents
 
@@ -70,6 +76,8 @@ def distance(p1, p2):
     dist = 0
     #1 less because of cluster place
     for i in range(len(p1)-1):
+        if p1[i].__class__.__name__ == 'str' or p2[i].__class__.__name__ == 'str':
+            continue
         dist += ((p2[i] - p1[i]) ** 2)
     return dist
 
