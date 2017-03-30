@@ -9,12 +9,13 @@ import Tkinter as tk
 
 class NK_Interface:
 
-    def __init__(self, color, audio, delay):
+    def __init__(self, color, audio, delay, testSet):
         self.dataList = []
         self.color = color
         self.audio = audio
         self.delay = delay
         self.currentData = False
+        self.dir_list = testSet
         if audio == 1:
             self.p = pyaudio.PyAudio()
 
@@ -85,10 +86,10 @@ class NK_Interface:
 
 
         #list of calibration directions - 0 is up, 1 is right, 2 is down,  3 is left
-        dir_list = [0,1,2,3,2,1,3,0,2,1,0,3,0,3,2,1,3,2,0,1]
+        #dir_list = [0,1,2,3,2,1,3,0,2,1,0,3,0,3,2,1,3,2,0,1]
         #dir_list = [0,1,2,]
         skip = True
-        for val in dir_list:
+        for val in self.dir_list:
 
             label = self.render_arrow(val,skip)
             skip = False
@@ -108,12 +109,13 @@ class NK_Interface:
             self.dataList.append([trial, label])
 
             sleep(self.delay)
+        mindWave.stop()
         self.calib_canvas.delete("all")
         #self.calib_canvas.create_text(self.screen_width//2, self.screen_height//2, text="Press Escape to Finish Calibration", font=self.textFont)
         self.parent.destroy()
 
     def render_arrow(self, val,skip):
-
+        label = ""
         if (val == 0):
             label = "up"
             #render 'up' arrow
