@@ -3,6 +3,7 @@
 from NeuroPy import NeuroPy
 from classifier import Classifier
 from NK_Interface import NK_Interface
+from trainingSets import *
 import Tkinter
 #import gui class here
 import time, sys
@@ -10,7 +11,7 @@ import time, sys
 
 def main(argv):
     #start gui to train
-    dir_list = [0,1,2,3,2,1,3,0,2,1,0,3,0,3,2,1,3,2,0,1]
+    trainingSet1 = [0,1,2,3,2,1,3,0,2,1,0,3,0,3,2,1,3,2,0,1]
     gui = NK_Interface(0,1,1, dir_list)
     gui.init_calib()
     rawData = gui.return_data()
