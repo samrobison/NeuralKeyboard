@@ -35,6 +35,8 @@ def kmeans(n, data):
         centroids = recalcCentroids(data, centroids)
     return data, centroids
 
+
+
 def fitNewPoint(centroids, point, epsilon):
     distances = []
     for cent in centroids:
@@ -80,6 +82,14 @@ def distance(p1, p2):
             continue
         dist += ((p2[i] - p1[i]) ** 2)
     return dist
+
+def calculateEpsilon(data, centroids):
+    maxDist = 0.0
+    for i in data:
+        dist = distance(i, centroids[i[-1]])
+        if dist > maxDist:
+            maxDist = dist
+    return maxDist * 1.2
 
 #might redefinine these later for our purposes but we don't need them as of now
 # def miss(index, data):
