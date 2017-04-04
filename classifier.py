@@ -6,6 +6,7 @@ import numpy.fft
 from clustering import kmeans
 from clustering import fitNewPoint
 from clustering import calculateEpsilon
+from pyeeg      import *
 
 class Classifier:
     def __init__(self, fileName):
@@ -32,19 +33,6 @@ class Classifier:
         median = np.median(np.array(data))
         reducedData.append(float(median))
 
-        # #power spectral density
-        # P = abs(numpy.fft.fft(data))
-        # for i in P:
-        #     i = i ** 2
-        # P = sum(P)
-        # reducedData.append(float(P))
-        #
-        # #spectral entropy
-        # d = P/(P + 1e-12)
-        # logd = np.log2(d + 1e-12)
-        # ent = -1*((d*logd)/np.log2(2))
-        # reducedData.append(float(ent))
-
         #rms
         rms = 0
         for i in data:
@@ -55,22 +43,13 @@ class Classifier:
         #std
         std = np.std(np.array(data))
 
-        #number of 0 crossings
-        lastPos = data[0] > 0
-        count = 0
-        for i in data:
-            if lastPos and i < 0:
-                count += 1
-            elif not lastPos and i > 0:
-                count += 1
-            lastPos = i > 0
-        reducedData.append(count)
+        #power
+        b = bin_power(data, [0.5,4,7,12,30], len(data)/2)
+        for i in b[1]:
+            reducedData.append(float(i))
 
-        #rise time to peak
-        peakIndex = data.index(max(data))
-        freq = 2.0/len(data)
-        riseTime = (peakIndex+1) * freq
-        reducedData.append(riseTime)
+        #spectral entropy
+        spec = spectral_entropy(data,[0.5,4,7,12,30],len(data)/2,Power_Ratio = b[1])
 
 
         #normalize feature vector

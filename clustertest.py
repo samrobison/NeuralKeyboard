@@ -10,7 +10,7 @@ for a in rawData:
 
 repeat = True
 data = []
-clusters = 8
+clusters = 7 
 
 for k in range(20):
     c = Classifier(False)
@@ -43,7 +43,7 @@ for k in range(20):
     else:
         #clean training data
         for i in trainingData:
-            del i[-1]  
+            del i[-1]
 
 if repeat == True:
     print("Calibration Failed Please Repeat")

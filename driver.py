@@ -68,22 +68,22 @@ def testCalibration(rawData):
 
 
 def main(argv):
-    colors = 1
-    sounds = 0
+    colors = 0
+    sound = 0
     delay = 1
     #start gui to train
-    gui = NK_Interface(color,sound ,delay, trainingSet1)
+    gui = NK_Interface(colors,sound ,delay, trainingSet1)
     gui.init_calib()
     rawData = gui.return_data()
 
     #gui takes up a lot of ram delete it
     del gui
 
-    gui = NK_Interface(color,sound,delay, trainingSet2)
-    gui.init_calib()
-    rawData += gui.return_data()
-
-    del gui
+    # gui = NK_Interface(color,sound,delay, trainingSet2)
+    # gui.init_calib()
+    # rawData += gui.return_data()
+    #
+    # del gui
     print rawData
     #create feature vectors
     c = Classifier(False)
