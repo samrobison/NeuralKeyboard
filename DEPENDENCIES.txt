@@ -4,3 +4,9 @@ pyaudio
 wave
 tkFont
 pillow
+PyUserInput
+Linux:
+- Xlib (python-xlib)
+Mac:
+- Quartz
+- AppKit
