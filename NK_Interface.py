@@ -34,16 +34,16 @@ class NK_Interface:
 
         #set up arrows to store in ram
         if(self.color == 0):
-            self.left = ImageTk.PhotoImage(Image.open("resources/images/leftarrow.png"))
-            self.right = ImageTk.PhotoImage(Image.open("resources/images/rightarrow.png"))
-            self.up = ImageTk.PhotoImage(Image.open("resources/images/uparrow.png"))
-            self.down = ImageTk.PhotoImage(Image.open("resources/images/downarrow.png"))
+            self.left   = ImageTk.PhotoImage(Image.open("resources/images/leftarrow.png"))
+            self.right  = ImageTk.PhotoImage(Image.open("resources/images/rightarrow.png"))
+            self.up     = ImageTk.PhotoImage(Image.open("resources/images/uparrow.png"))
+            self.down   = ImageTk.PhotoImage(Image.open("resources/images/downarrow.png"))
 
         else:
-            self.left = ImageTk.PhotoImage(Image.open("resources/images/leftarrowblue.png"))
-            self.right = ImageTk.PhotoImage(Image.open("resources/images/rightarrowred.png"))
-            self.up = ImageTk.PhotoImage(Image.open("resources/images/uparrowyellow.png"))
-            self.down = ImageTk.PhotoImage(Image.open("resources/images/downarrowgreen.png"))
+            self.left   = ImageTk.PhotoImage(Image.open("resources/images/leftarrowblue.png"))
+            self.right  = ImageTk.PhotoImage(Image.open("resources/images/rightarrowred.png"))
+            self.up     = ImageTk.PhotoImage(Image.open("resources/images/uparrowyellow.png"))
+            self.down   = ImageTk.PhotoImage(Image.open("resources/images/downarrowgreen.png"))
 
         #start MindWave
         mindWave = NeuroPy("/dev/tty.MindWaveMobile-DevA", 57600)
@@ -101,7 +101,7 @@ class NK_Interface:
             #let the callback collect data
             self.currentData = []
 
-            sleep(3)
+            sleep(2)
 
             self.calib_canvas.delete('all')
             self.parent.update_idletasks()

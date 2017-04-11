@@ -4,8 +4,8 @@ import numpy.fft
 from classifier import Classifier
 
 
-dir_list = [0,1,2,3,2,1]
-gui = NK_Interface(0,1,1, dir_list)
+dir_list = [0,3,2,1,2,0]
+gui = NK_Interface(1,0,1, dir_list)
 gui.init_calib()
 
 k = gui.return_data()
