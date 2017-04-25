@@ -75,5 +75,7 @@ def testCalibration(trainingData):
         print("Calibration Successful")
         return (bestclustered, bestCentroids, 99999.999, bestcs)
 
-
-#testCalibration(testrawdata)
+# c = Classifier(False)
+# trainingData, avg,std = c.createFeatureVectorTrain(testrawdata)
+#
+# testCalibration(trainingData)

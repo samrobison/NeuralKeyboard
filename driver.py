@@ -23,8 +23,7 @@ def main(argv):
     sound = 0
     delay = 1
     #start gui to train
-    trainingSetx = [0,0,1,2,3,0,1,3,0,2,1,]
-    gui = NK_Interface(colors,sound ,delay, trainingSetx)
+    gui = NK_Interface(colors,sound ,delay, trainingSet1)
     gui.init_calib()
     rawData = gui.return_data()
 
@@ -36,7 +35,7 @@ def main(argv):
     # rawData += gui.return_data()
     #
     # del gui
-    print rawData
+    # print rawData
     #create feature vectors
     c = Classifier(False)
     trainingData, avg,std = c.createFeatureVectorTrain(rawData)
@@ -66,6 +65,7 @@ def main(argv):
     sleep(1)
 
     while True:
+        g.resetPosition()
         takeData = []
         sleep(2)
         predict = takeData[:]
@@ -82,6 +82,7 @@ def main(argv):
                 g.moveThing(2)
             elif labels[direction] == 'left':
                 g.moveThing(3)
+            sleep(.5)
         else:
             print "noise"
 

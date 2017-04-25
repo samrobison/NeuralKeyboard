@@ -9,7 +9,6 @@ from PIL import Image, ImageTk
 class Game:
 
     def __init__(self):
-
         self.parent = tk.Tk()
         self.screen_width = self.parent.winfo_screenwidth()
         self.screen_height = self.parent.winfo_screenheight()
@@ -25,19 +24,23 @@ class Game:
 
 
     def moveThing(self, direction):
-        moveconst = 10
+        moveconst = 25
         if direction == 0 :
-            #apply upward force (-y)
             self.y -= moveconst
         if direction == 1:
-            #apply rightward force (+x)
             self.x += moveconst
         if direction == 2:
-            #apply downward force (+y)
             self.y += moveconst
         if direction == 3:
-            #apply leftward force (-x)
             self.x -= moveconst
+        self.canvas.delete('all')
+        self.canvas.create_image(self.x, self.y, image=self.circle)
+        self.canvas.pack()
+        self.parent.update_idletasks()
+
+    def resetPosition(self):
+        self.x = 250
+        self.y=250
         self.canvas.delete('all')
         self.canvas.create_image(self.x, self.y, image=self.circle)
         self.canvas.pack()

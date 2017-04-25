@@ -21,8 +21,8 @@ class Classifier:
         # #max
         # reducedData.append(float(max(data)))
 
-        #min
-        reducedData.append(float(min(data)))
+        # #min
+        # reducedData.append(float(min(data)))
 
         #mean
         avg = np.mean(np.array(data))
@@ -75,8 +75,8 @@ class Classifier:
             # #max
             # reducedData.append(float(max(data)))
 
-            #min
-            reducedData.append(float(min(data)))
+            # #min
+            # reducedData.append(float(min(data)))
 
             #mean
             avg = np.mean(np.array(data))
@@ -98,7 +98,7 @@ class Classifier:
 
             #power
             b = bin_power(data, [0.5,4,7,12,30], len(data)/2)
-            for i in b[1]:
+            for i in b[0]:
                 reducedData.append(float(i))
 
             #spectral entropy
