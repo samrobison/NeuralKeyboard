@@ -10,6 +10,7 @@ def kmeans(n, data):
     centroids = []
     randos = []
     #get starting points
+    print "choosing centroids"
     for i in range(n):
         rand = int(random.random() * len(data))
         #make sure random centroid isn't taken
@@ -20,6 +21,7 @@ def kmeans(n, data):
     for i in randos:
         centroids.append(data[i])
     #500 times
+    print "starting clustering"
     for i in range(500):
         #calculate each point's closest centroid
         for point in data:
@@ -30,13 +32,7 @@ def kmeans(n, data):
             #assign cluster
             point[-1] = distances.index(min(distances))
         #recalculate centroids
-        prevcent = centroids[:]
-        centroids, valid = recalcCentroids(data, centroids)
-        if not valid:
-            return False, False
-        if prevcent == centroids:
-            break
-
+        centroids = recalcCentroids(data, centroids)
     return data, centroids
 
 
@@ -63,70 +59,20 @@ def recalcCentroids(data, centroids):
             if point[i].__class__.__name__ == 'str':
                 continue
             tmpCents[point[-1]][i] += point[i]
+#    print counts
     for point in tmpCents:
         c = counts[tmpCents.index(point)]
         for k in range(len(point)):
             if point[k].__class__.__name__ == 'str':
                 continue
-            if c == 0:
-                print "Empty cluster skipping..."
-                #print counts
-                return centroids, False
             point[k] /= c
-    return tmpCents, True
+    return tmpCents
 
 def clusterDistance(data, centroids):
     retVal = 0
     for point in data:
         retVal += distance(point, centroids[point[-1]])
     return retVal
-
-def cohesion(data,n):
-    distances = n*[0]
-    data2 = data[:]
-    del data2[0]
-    for i in range(0,len(data)-1):
-        for k in data2:
-            if k[-1] == data[i][-1]:
-                distances[k[-1]] += distance(data[i], k)
-        del data2[0]
-    return sum(distances)
-
-def silhouette(data, n):
-    sil = 0
-    clusterSize = n*[0]
-    offset = 0
-    for p in data:
-        clusterSize[p[-1]] +=1
-    if 0 in clusterSize:
-        return -1
-    for p in data:
-        a = 0
-        b = n*[0]
-        b[p[-1]] = 99999999
-        for p2 in data:
-            if p == p2:
-                continue
-            if p[-1] == p2[-1]:
-                a += distance(p,p2)
-            else:
-                b[p2[-1]] += distance(p,p2)
-        for i in range(len(b)):
-            b[i] /= clusterSize[i]
-        a /= clusterSize[p[-1]]
-        #print str(a)+" "+str(min(b))
-        if (max(min(b),a)) == 0:
-            print "somethign weird happened... "+str(min(b)) + " "+ str(a)
-            offset += 1
-        else:
-            sil += (min(b)- a)/(max(min(b),a))
-
-    return (sil / (len(data)- offset))
-
-
-
-
-
 
 def distance(p1, p2):
     dist = 0
